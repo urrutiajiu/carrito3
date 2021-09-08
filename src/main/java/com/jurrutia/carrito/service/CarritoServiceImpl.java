@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CarritoServiveImpl implements CarritoService {
+public class CarritoServiceImpl implements CarritoService {
 
   @Autowired
   ClienteDao clienteDao;
@@ -25,6 +25,13 @@ public class CarritoServiveImpl implements CarritoService {
   private CarritoDao carritoDao;
   @Autowired
   private ProductoDao productoDao;
+
+
+  @Override
+  public Carrito getCarritoById(Long idCarrito){
+    return carritoDao.findById(idCarrito).orElse(null);
+  }
+
 
   @Override
   public Carrito add(Cliente cliente) {
@@ -66,7 +73,6 @@ public class CarritoServiveImpl implements CarritoService {
       if (item.getProducto().getIdProducto().equals(idProducto))
           itemToDelete = item;
     }
-    itemToDelete.setCarrito(null);
     carrito.getItems().remove(itemToDelete);
     return carritoDao.save(carrito);
   }

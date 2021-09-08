@@ -3,7 +3,6 @@ package com.jurrutia.carrito.model;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 
 @Entity
 public class CarritoVip extends Carrito {

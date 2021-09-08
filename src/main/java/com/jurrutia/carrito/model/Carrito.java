@@ -48,7 +48,7 @@ public abstract @Data class Carrito {
     @JoinColumn(name = "ID_CLIENTE")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "carrito",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "carrito",cascade = {CascadeType.PERSIST, CascadeType.MERGE},orphanRemoval = true)
     @EqualsAndHashCode.Exclude 
     private Set<CarritoItem> items;
 
