@@ -38,10 +38,12 @@ public abstract @Data class Carrito {
     @Column(name="ESTADO",nullable = false)
     private Estado estado; 
 
+    @Enumerated(EnumType.STRING)
     @Column(name="TIPO",nullable = false) 
     private TipoCarrito tipoCarrito;
 
     @Transient
+    //@Column(name="TOTAL")
     public abstract BigDecimal getTotal();
 
     @ManyToOne

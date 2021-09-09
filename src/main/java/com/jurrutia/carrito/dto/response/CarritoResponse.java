@@ -14,6 +14,7 @@ public class CarritoResponse {
   
   private Long idCarrito;
   private BigDecimal total;
+  private String tipo;
   private String estado;
   private List<CarritoItem> items;
 

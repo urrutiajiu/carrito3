@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 
 @Entity
 public class CarritoComun extends Carrito {
@@ -15,6 +14,8 @@ public class CarritoComun extends Carrito {
         this.setTipoCarrito(TipoCarrito.COMUN);
     }
 
+
+    
     
     @Override
     public BigDecimal getTotal() {
@@ -23,6 +24,9 @@ public class CarritoComun extends Carrito {
         for (CarritoItem item : this.getItems()) {
             total = total.add(new BigDecimal(item.getCantidad()).multiply(item.getPrecioUnitario(), MathContext.DECIMAL32));
         }
+        if (this.getItems().size() == 10)
+            total = total.subtract(total.multiply(new BigDecimal(0.1)));
+
         return total;
     }
     

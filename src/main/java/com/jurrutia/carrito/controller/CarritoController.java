@@ -1,10 +1,15 @@
 package com.jurrutia.carrito.controller;
 
+import java.util.List;
+
 import com.jurrutia.carrito.dto.request.CarritoRequest;
 import com.jurrutia.carrito.dto.response.CarritoResponse;
+import com.jurrutia.carrito.dto.response.ProductoResponse;
 import com.jurrutia.carrito.model.Carrito;
 import com.jurrutia.carrito.model.Cliente;
+import com.jurrutia.carrito.model.Producto;
 import com.jurrutia.carrito.service.CarritoService;
+import com.jurrutia.carrito.service.ClienteService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,9 @@ public class CarritoController {
   private CarritoService carritoService;
 
   @Autowired
+  private ClienteService clienteService;
+
+  @Autowired
   private ModelMapper modelMapper;
 
 
@@ -38,8 +46,8 @@ public class CarritoController {
   @ResponseStatus(code = HttpStatus.CREATED)
   public Long crearCarrito(@RequestBody CarritoRequest carritoRequest) {
 
-    Cliente cliente = modelMapper.map(carritoRequest, Cliente.class);
-
+    Cliente cliente = clienteService.getByDni(carritoRequest.getDni());
+    
     return carritoService.add(cliente).getIdCarrito();
   }
 
@@ -63,9 +71,11 @@ public class CarritoController {
     return modelMapper.map(carrito, CarritoResponse.class);
   }
 
-  // @GetMapping("/obtenerTop4/{dni}")
-  // public ProductoDto obtenerTop4(@PathVariable("dni") Long dni) {
+  @GetMapping("/obtenerTop4/{dni}")
+  public ProductoResponse obtenerTop4(@PathVariable("dni") Long dni) {
 
-  //   return modelMapper.map(producto, CarritoDto.class);
-  // }
+    List<Producto> productos = carritoService.obtenerTop4(dni);
+
+     return modelMapper.map(productos, ProductoResponse.class);
+  }
 }

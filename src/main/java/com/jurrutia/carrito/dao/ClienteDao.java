@@ -9,5 +9,5 @@ import com.jurrutia.carrito.model.Cliente;
 public interface ClienteDao extends JpaRepository<Cliente,Long>{
   
   public Cliente findByDni(Long dni);
-  
+
 }

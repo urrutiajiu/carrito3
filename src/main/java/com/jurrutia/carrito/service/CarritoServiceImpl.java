@@ -1,7 +1,11 @@
 package com.jurrutia.carrito.service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 
 import com.jurrutia.carrito.dao.CarritoDao;
 import com.jurrutia.carrito.dao.ClienteDao;
@@ -9,6 +13,8 @@ import com.jurrutia.carrito.dao.ProductoDao;
 import com.jurrutia.carrito.model.Carrito;
 import com.jurrutia.carrito.model.CarritoComun;
 import com.jurrutia.carrito.model.CarritoItem;
+import com.jurrutia.carrito.model.CarritoPromocional;
+import com.jurrutia.carrito.model.CarritoVip;
 import com.jurrutia.carrito.model.Cliente;
 import com.jurrutia.carrito.model.Estado;
 import com.jurrutia.carrito.model.Producto;
@@ -35,12 +41,18 @@ public class CarritoServiceImpl implements CarritoService {
 
   @Override
   public Carrito add(Cliente cliente) {
-    Carrito carrito = new CarritoComun();
+    Carrito carrito;
+    if (cliente.isEsVip())
+      carrito = new CarritoVip();
+    else if (this.fechaPromocional())
+      carrito = new CarritoPromocional();
+    else
+      carrito = new CarritoComun();
+
     carrito.setEstado(Estado.EN_CURSO);
-    carrito.setCliente(clienteDao.findByDni(cliente.getDni()));
+    carrito.setCliente(cliente);
     carrito.setItems(new HashSet<CarritoItem>());
     carrito.setFecha(new Date());
-    //carrito.setTotal(new BigDecimal(0));
     return carritoDao.save(carrito);
   }
 
@@ -76,5 +88,21 @@ public class CarritoServiceImpl implements CarritoService {
     carrito.getItems().remove(itemToDelete);
     return carritoDao.save(carrito);
   }
-  
+
+  private boolean fechaPromocional(){
+    Random random = new Random();
+    int valor = random.nextInt(1000);
+    return (valor%2 == 0);
+  }
+
+
+	@Override
+	public List<Producto> obtenerTop4(Long dni) {
+    Cliente cliente = clienteDao.findByDni(dni);
+		List<Carrito> carritos = carritoDao.getCarritosByCliente(cliente);
+    carritos.stream().map(Carrito::getItems).sorted();
+		return new ArrayList<Producto>();
+
+	}
+
 }
