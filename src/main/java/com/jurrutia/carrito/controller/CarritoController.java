@@ -1,6 +1,8 @@
 package com.jurrutia.carrito.controller;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.jurrutia.carrito.dto.request.CarritoRequest;
 import com.jurrutia.carrito.dto.response.CarritoResponse;
@@ -39,7 +41,11 @@ public class CarritoController {
 
   @GetMapping("/consultar/{id}")
   public CarritoResponse getCarrito(@PathVariable("id") Long idCarrito){
-    return modelMapper.map(carritoService.getCarritoById(idCarrito), CarritoResponse.class);
+    Carrito carrito = carritoService.getCarritoById(idCarrito);
+    if (carrito != null)
+      return modelMapper.map(carritoService.getCarritoById(idCarrito), CarritoResponse.class);
+    else
+      return null;
   }
 
   @PostMapping("/create")
@@ -72,10 +78,12 @@ public class CarritoController {
   }
 
   @GetMapping("/obtenerTop4/{dni}")
-  public ProductoResponse obtenerTop4(@PathVariable("dni") Long dni) {
+  public List<ProductoResponse> obtenerTop4(@PathVariable("dni") Long dni) {
 
     List<Producto> productos = carritoService.obtenerTop4(dni);
-
-     return modelMapper.map(productos, ProductoResponse.class);
+    List<ProductoResponse> response = productos
+      .stream()
+      .map(producto -> modelMapper.map(producto, ProductoResponse.class)).collect(Collectors.toList());
+    return response;
   }
 }

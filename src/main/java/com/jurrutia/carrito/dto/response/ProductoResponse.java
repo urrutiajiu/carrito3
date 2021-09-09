@@ -1,5 +1,9 @@
 package com.jurrutia.carrito.dto.response;
 
+import java.util.List;
+
+import com.jurrutia.carrito.model.Producto;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,5 +11,6 @@ import lombok.Setter;
 @Setter
 public class ProductoResponse {
   
-  private String nombre;
+  private Producto producto;
+
 }

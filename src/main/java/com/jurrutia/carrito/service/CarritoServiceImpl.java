@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.jurrutia.carrito.dao.CarritoDao;
 import com.jurrutia.carrito.dao.ClienteDao;
@@ -38,9 +40,9 @@ public class CarritoServiceImpl implements CarritoService {
     return carritoDao.findById(idCarrito).orElse(null);
   }
 
-
   @Override
   public Carrito add(Cliente cliente) {
+    
     Carrito carrito;
     if (cliente.isEsVip())
       carrito = new CarritoVip();
@@ -64,16 +66,21 @@ public class CarritoServiceImpl implements CarritoService {
 
   @Override
   public Carrito addProductoToCarrito(Long idCarrito, Long idProducto) {
+
     Carrito carrito = carritoDao.findById(idCarrito).orElse(null);
-    Producto producto = productoDao.findById(idProducto).orElse(null);
-    CarritoItem carritoDetalle = new CarritoItem();
-    carritoDetalle.setCantidad(1);
-    carritoDetalle.setCarrito(carrito);
-    carritoDetalle.setProducto(producto);
-    carritoDetalle.setPrecioUnitario(producto.getPrecioUnitario());
-    //carrito.agregarItem(carritoDetalle);
-    carrito.getItems().add(carritoDetalle);
-    carritoDao.save(carrito);
+    CarritoItem carritoItem = carrito.getItems().stream().filter(i -> i.getProducto().getIdProducto().equals(idProducto)).findFirst().orElse(null);
+    
+    if (carritoItem == null) {
+      Producto producto = productoDao.findById(idProducto).orElse(null);
+      CarritoItem carritoDetalle = new CarritoItem();
+      carritoDetalle.setCantidad(1);
+      carritoDetalle.setCarrito(carrito);
+      carritoDetalle.setProducto(producto);
+      carritoDetalle.setPrecioUnitario(producto.getPrecioUnitario());
+      carrito.getItems().add(carritoDetalle);
+      carritoDao.save(carrito);
+    }
+    
     return carrito;
   }
 
@@ -98,10 +105,8 @@ public class CarritoServiceImpl implements CarritoService {
 
 	@Override
 	public List<Producto> obtenerTop4(Long dni) {
-    Cliente cliente = clienteDao.findByDni(dni);
-		List<Carrito> carritos = carritoDao.getCarritosByCliente(cliente);
-    carritos.stream().map(Carrito::getItems).sorted();
-		return new ArrayList<Producto>();
+    List<Producto> productos = productoDao.getAllProductosByDni(dni);
+    return productos.stream().limit(4).collect(Collectors.toList());
 
 	}
 
