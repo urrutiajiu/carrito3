@@ -1,12 +1,9 @@
 package com.jurrutia.carrito.service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.jurrutia.carrito.dao.CarritoDao;
@@ -109,5 +106,20 @@ public class CarritoServiceImpl implements CarritoService {
     return productos.stream().limit(4).collect(Collectors.toList());
 
 	}
+
+  @Override
+  public List<Carrito> listaCarritos() {
+    return carritoDao.findAll();
+  }
+
+  @Override
+  public List<Producto> getProductos() {
+    return productoDao.findAll();
+  }
+
+  @Override
+  public List<Cliente> getClientes() {
+    return clienteDao.findAll();
+  }
 
 }

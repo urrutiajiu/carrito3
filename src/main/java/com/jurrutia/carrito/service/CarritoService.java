@@ -13,7 +13,10 @@ public interface CarritoService {
   void delete(Long idCarrito);
   Carrito addProductoToCarrito(Long idCarrito, Long idProducto);
   Carrito deleteProductoOfCarrito(Long idCarrito, Long idProducto);
-  List<Producto> obtenerTop4(Long dni);  
+  List<Producto> obtenerTop4(Long dni);
+  List<Carrito> listaCarritos();
+  List<Producto> getProductos();
+  List<Cliente> getClientes();  
   
   
 }

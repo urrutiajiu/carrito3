@@ -5,3 +5,16 @@
 /.settings
 /.vscode
 target/
+src/main/resources/application.properties
+target/classes/com/jurrutia/carrito/controller/CarritoController.class
+target/classes/com/jurrutia/carrito/dao/CarritoDao.class
+target/classes/com/jurrutia/carrito/dao/ProductoDao.class
+target/classes/com/jurrutia/carrito/dto/request/CarritoRequest.class
+target/classes/com/jurrutia/carrito/dto/response/CarritoResponse.class
+target/classes/com/jurrutia/carrito/model/Carrito.class
+target/classes/com/jurrutia/carrito/model/CarritoComun.class
+target/classes/com/jurrutia/carrito/model/CarritoItem.class
+target/classes/com/jurrutia/carrito/model/CarritoPromocional.class
+target/classes/com/jurrutia/carrito/model/CarritoVip.class
+target/classes/com/jurrutia/carrito/service/CarritoService.class
+target/classes/com/jurrutia/carrito/service/CarritoServiveImpl.class

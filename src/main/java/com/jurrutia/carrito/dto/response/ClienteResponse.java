@@ -1,17 +1,15 @@
 package com.jurrutia.carrito.dto.response;
 
-
-import java.math.BigDecimal;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductoResponse {
+public class ClienteResponse {
+ 
   
-  private Long idProducto;
+  private Long idCliente;
   private String nombre;
-  private BigDecimal precioUnitario;
-
+  private Long dni;
+  
 }
